@@ -1,75 +1,57 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Player } from '../types';
+import AddPlayerScreen from './add-player';
+import HomeScreen from './home';
+import StatsScreen from './stats';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export type RootTabParamList = {
+  Home: undefined;
+  AddPlayer: undefined;
+  Stats: undefined;
+};
 
-export default function HomeScreen() {
+const Tab = createBottomTabNavigator<RootTabParamList>();
+
+export default function App() {
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  const addPlayer = (player: Player) => {
+    setPlayers((prev) => [...prev, player]);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => {
+            if (route.name === 'Home') {
+              return <Ionicons name="home" size={size} color={color} />;
+            }
+            if (route.name === 'AddPlayer') {
+              return <Ionicons name="add-circle" size={size + 8} color={color} />;
+            }
+            if (route.name === 'Stats') {
+              return <Ionicons name="stats-chart" size={size} color={color} />;
+            }
+            return null;
+          },
+          tabBarShowLabel: false,
+        })}
+      >
+        <Tab.Screen name="Home">
+          {() => <HomeScreen players={players} setPlayers={setPlayers} />}
+        </Tab.Screen>
+        <Tab.Screen name="AddPlayer">
+          {() => <AddPlayerScreen addPlayer={addPlayer} />}
+        </Tab.Screen>
+        <Tab.Screen name="Stats">
+          {() => <StatsScreen players={players} />}
+        </Tab.Screen>
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
