@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Player } from '../types';
@@ -25,7 +26,8 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
 
     const handleSearchPlayers = (query: string) => {
         if (query.trim() === '') {
-            setPlayers(players)
+            loadPlayers().then((loadedPlayers) => setPlayers(loadedPlayers))
+            return;
         }
 
         const searchedPlayers = searchPlayers(players, query)
@@ -47,34 +49,84 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                 onChangeText={(query) => handleSearchPlayers(query)}
             />
 
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.buttonContainer}
-            >
-                {traits.map((trait) => (
-                    <Pressable style={styles.button} onPress={() => handleSortPlayers(trait)} >
-                        <Text style={styles.buttonText}>{trait}</Text>
-                    </Pressable>
-                ))}
-            </ScrollView>
+            {/* Wrapper for the blur effect */}
+            <View style={styles.scrollContainer}>
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.buttonContainer}
+                    contentContainerStyle={styles.buttonContentContainer}
+                >
+                    {traits.map((trait, index) => (
+                        <Pressable 
+                            key={index}
+                            style={({ pressed }) => [
+                                styles.button,
+                                pressed && styles.buttonPressed
+                            ]} 
+                            onPress={() => handleSortPlayers(trait)}
+                        >
+                            <Text style={styles.buttonText}>{trait}</Text>
+                        </Pressable>
+                    ))}
+                </ScrollView>
+                
+                {/* Left blur gradient */}
+                <LinearGradient
+                    colors={['#e4e4e7', 'transparent']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.leftBlur}
+                    pointerEvents="none"
+                />
+                
+                {/* Right blur gradient */}
+                <LinearGradient
+                    colors={['transparent', '#e4e4e7']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={styles.rightBlur}
+                    pointerEvents="none"
+                />
+            </View>
 
-            <FlatList
-                data={players}
-                style={styles.flatlist}
-                numColumns={numberOfColums}
-                columnWrapperStyle={{ justifyContent: 'space-between', gap: 15 }}
-                keyExtractor={(_, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.card}>
-                        <Image source={{ uri: item.image }} style={styles.image}></Image>
-                        <Text style={styles.name}>{item.name}</Text>
-                        <Text style={styles.substats}>Points: {item.points}</Text>
-                        <Text style={styles.substats}>Rebounds: {item.rebounds}</Text>
-                        <Text style={styles.substats}>Assists: {item.assists}</Text>
-                    </View>
-                )}
-            />
+            {/* Wrapper for the FlatList blur effect */}
+            <View style={styles.flatListContainer}>
+                <FlatList
+                    data={players}
+                    style={styles.flatlist}
+                    numColumns={numberOfColums}
+                    columnWrapperStyle={numberOfColums > 1 ? { justifyContent: 'space-around', gap: 15 } : null}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.card}>
+                            <Image source={{ uri: item.image }} style={styles.image}></Image>
+                            <Text style={styles.name}>{item.name}</Text>
+                            <Text style={styles.substats}>Points: {item.points}</Text>
+                            <Text style={styles.substats}>Rebounds: {item.rebounds}</Text>
+                            <Text style={styles.substats}>Assists: {item.assists}</Text>
+                        </View>
+                    )}
+                />
+                
+                {/* Top blur gradient */}
+                <LinearGradient
+                    colors={['#e4e4e7', 'transparent']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={styles.topBlur}
+                    pointerEvents="none"
+                />
+                
+                {/* Bottom blur gradient */}
+                <LinearGradient
+                    colors={['transparent', '#e4e4e7']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0, y: 1 }}
+                    style={styles.bottomBlur}
+                    pointerEvents="none"
+                />
+            </View>
         </View>
     );
 }
@@ -83,67 +135,137 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
+        paddingBottom: Platform.OS === 'ios' ? 120 : 105, // Space for floating tab bar
+        backgroundColor: '#e4e4e7'
     },
     search: {
-        backgroundColor: '#c7c7c7c7',
-        borderRadius: 25,
-        marginHorizontal: 2,
-        marginBottom: 10,
-        paddingHorizontal: 15,
+        height: 45,
+        backgroundColor: '#ffffff',
+        borderRadius: 20,
+        marginHorizontal: 5,
+        marginBottom: 15,
+        paddingHorizontal: 20,
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: '#e5e7eb',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 2,
+    },
+    scrollContainer: {
+        position: 'relative',
+        marginBottom: 15,
+        height: 60,
     },
     buttonContainer: {
-        marginBottom: 10,
+        flex: 1,
         paddingVertical: 5,
-        paddingHorizontal: 10,
-        flexDirection: 'row',
-        gap: 10,
     },
-    button: {
-        height: 42,
-        marginHorizontal: 5,
-        marginBottom:5,
-        backgroundColor: '#f19898ff',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        borderRadius: 25,
+    buttonContentContainer: {
+        paddingHorizontal: 20, // Add padding so buttons don't get cut off by blur
         alignItems: 'center',
     },
+    button: {
+        height: 40,
+        marginRight: 12,
+        backgroundColor: '#3b82f6',
+        paddingHorizontal: 20,
+        paddingVertical: 8,
+        borderRadius: 20,
+        justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 3,
+    },
+    buttonPressed: {
+        opacity: 0.8,
+        transform: [{ scale: 0.98 }],
+    },
     buttonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#000000',
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#ffffff',
         textAlign: 'center',
     },
+    leftBlur: {
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: 15,
+        zIndex: 1,
+    },
+    rightBlur: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: 15,
+        zIndex: 1,
+    },
+    flatListContainer: {
+        position: 'relative',
+        flex: 1,
+    },
     flatlist: {
-        width: '100%',
-        marginTop: 14,
-        paddingHorizontal: 15,
-        flexWrap: 'wrap',
-        gap: 5,
+        flex: 1,
+        paddingHorizontal: 5,
+    },
+    topBlur: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 15,
+        zIndex: 1,
+    },
+    bottomBlur: {
+        position: 'absolute',
+        bottom: 30,
+        left: 0,
+        right: 0,
+        height: 15,
+        zIndex: 1,
     },
     card: {
-        backgroundColor: '#f0f0f0',
-        padding: 15,
+        backgroundColor: '#ffffff',
+        padding: 16,
         marginVertical: 8,
         width: 150,
-        borderWidth: 2,
-        borderColor: '#000000',
-        borderRadius: 8
+        borderRadius: 12,
+        // Enhanced shadow for iOS
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 12,
+        // Enhanced shadow for Android
+        elevation: 8,
     },
     image: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         alignSelf: 'center',
-        borderRadius: 40,
+        borderRadius: 35,
+        marginBottom: 8,
         borderWidth: 2,
-        borderColor: '#000000'
+        borderColor: '#3b82f6',
     },
     name: {
         alignSelf: 'center',
-        fontSize: 18,
-        fontWeight: 'bold'
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#1f2937',
+        marginBottom: 8,
+        textAlign: 'center',
     },
     substats: {
-        fontWeight: 'semibold'
+        fontSize: 12,
+        fontWeight: '500',
+        color: '#6b7280',
+        marginBottom: 2,
     }
 });
