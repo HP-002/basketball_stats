@@ -111,6 +111,7 @@ export default function TabLayout() {
           tabBarLabel: 'Statistics',
         }}
       >
+        {/* {() => <AddPlayerScreen addPlayer={addPlayer} />} */}
         {() => <StatsScreen players={players} />}
       </Tab.Screen>
     </Tab.Navigator>

@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
     flatListContainer: {
         position: 'relative',
         flex: 1,
+        paddingBottom: 30,
     },
     flatlist: {
         flex: 1,
