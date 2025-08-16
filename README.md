@@ -36,7 +36,7 @@ A comprehensive React Native mobile application for managing and analyzing baske
 
 ### IOS Demo Link
 
-![IOS Demo GIF](https://imgur.com/a/ujqr7SU)
+[IOS Demo GIF](https://imgur.com/a/ujqr7SU)
 
 ## 📁 Project Structure
 
