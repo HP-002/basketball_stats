@@ -1,110 +1,251 @@
-# Basketball Stats
+# Basketball Stats 📊🏀
 
-## Table of Contents
+A comprehensive React Native mobile application for managing and analyzing basketball player statistics. Built with Expo and featuring a modern, responsive design with dark/light theme support.
 
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Available Scripts](#available-scripts)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+## 🌟 Features
 
-## Features
+### 📱 Core Functionality
+- **Player Management**: Add, view, and manage basketball players with detailed statistics
+- **Search & Filter**: Real-time search by player name and sort by various statistics
+- **Statistics Dashboard**: Comprehensive analytics with charts and performance metrics
+- **Data Persistence**: Local storage using AsyncStorage for data persistence
+- **Cross-Platform**: Works on iOS, Android, and Web platforms
 
-- Built with [Expo](https://expo.dev) for rapid React Native development
-- File-based routing for easy navigation
-- Ready-to-use development, emulator, and simulator support
-- Simple project reset to start fresh
-- Community resources and documentation links
+### 🎨 User Interface
+- **Modern Design**: Clean, intuitive interface with card-based layouts
+- **Theme Support**: Automatic dark/light mode with system preference detection
+- **Responsive Layout**: Adapts to different screen sizes and orientations
+- **Smooth Animations**: Gradient overlays and smooth transitions
+- **Visual Feedback**: Interactive elements with press states and haptic feedback
 
-## Project Structure
+### 📊 Statistics & Analytics
+- **Player Cards**: Detailed player information with profile images and stats
+- **Top Performers**: Identify leading players in points, rebounds, and assists
+- **Team Averages**: Calculate and display team-wide statistics
+- **Interactive Charts**: Bar charts and line charts for data visualization
+- **Performance Metrics**: Points, rebounds, assists, and player ratings
+
+### 🔧 Technical Features
+- **TypeScript**: Full type safety throughout the application
+- **File-based Routing**: Expo Router for seamless navigation
+- **State Management**: React Context for theme management
+- **Image Handling**: Profile picture upload and management
+- **Keyboard Handling**: Optimized input experience across platforms
+
+## 📁 Project Structure
 
 ```
 basketball_stats/
-├── app/                # Main application code
-├── app-example/        # Example starter code (after reset)
-├── assets/             # Images, fonts, etc.
-├── node_modules/       
-├── package.json        
-├── README.md           
-└── ...
+├── app/                    # Main application screens
+│   ├── (tabs)/            # Tab-based navigation screens
+│   │   ├── home.tsx       # Player list and search
+│   │   ├── add-player.tsx # Add new player form
+│   │   └── stats.tsx      # Statistics and analytics
+│   ├── _layout.tsx        # Root layout configuration
+│   └── types.tsx          # TypeScript type definitions
+├── components/            # Reusable UI components
+│   ├── PlayerCard.tsx     # Individual player display card
+│   ├── TeamStatsCard.tsx  # Team statistics summary
+│   ├── TopPerformerCard.tsx # Top performer display
+│   ├── FilterButton.tsx   # Sorting and filtering buttons
+│   ├── filter-functionality.tsx # Search and sort logic
+│   ├── stats-functionality.tsx # Statistics calculations
+│   └── save-image.tsx     # Image handling utilities
+├── hooks/                 # Custom React hooks
+│   └── AppThemeContext.tsx # Theme management context
+├── constants/             # Application constants
+│   └── Colors.ts          # Theme color definitions
+├── assets/                # Static assets
+│   ├── images/            # App icons and default images
+│   └── players.json       # Sample player data
+└── scripts/               # Build and utility scripts
 ```
 
-## Available Scripts
+## 🚀 Getting Started
 
-- `npm install` – Install dependencies
-- `npx expo start` – Start the Expo development server
-- `npm run reset-project` – Reset to a fresh project state
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn package manager
+- Expo CLI (`npm install -g @expo/cli`)
+- iOS Simulator (for iOS development) or Android Studio (for Android development)
 
-## Usage
+### Installation
 
-1. **Install dependencies**
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd basketball_stats
+   ```
 
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Start the app**
-
+3. **Start the development server**
    ```bash
    npx expo start
    ```
 
-3. **Open the app**  
-   Use the Expo CLI to open your app in a development build, Android emulator, iOS simulator, or Expo Go.
+4. **Run on your preferred platform**
+   - **iOS**: Press `i` in the terminal or scan QR code with Expo Go
+   - **Android**: Press `a` in the terminal or scan QR code with Expo Go
+   - **Web**: Press `w` in the terminal
 
-4. **Develop**  
-   Edit files in the `app` directory. Changes reload automatically.
+## 📱 Usage Guide
 
-## Contributing
+### Adding Players
+1. Navigate to the "Add Player" tab
+2. Tap the profile image to select a photo
+3. Fill in player details:
+   - Name (required)
+   - Location
+   - Age
+   - Height (in inches)
+   - Statistics (points, rebounds, assists, ratings)
+4. Tap "Add Player" to save
 
-Contributions are welcome! Please open issues or pull requests for improvements or bug fixes.
+### Managing Players
+- **Search**: Use the search bar to find players by name
+- **Sort**: Tap filter buttons to sort by different statistics
+- **View**: Player cards display all information in an organized layout
 
-## License
+### Viewing Statistics
+- **Top Performers**: See leading players in each category
+- **Team Averages**: View overall team performance metrics
+- **Charts**: Interactive visualizations of player comparisons
+- **Trends**: Line charts showing performance patterns
 
-This project is licensed under the MIT License.
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 🛠️ Available Scripts
 
 ```bash
+# Start the development server
+npm start
+npx expo start
+
+# Run on specific platforms
+npm run android    # Android emulator
+npm run ios        # iOS simulator
+npm run web        # Web browser
+
+# Linting
+npm run lint
+
+# Reset project to fresh state
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🎨 Theming System
 
-## Learn more
+The app features a comprehensive theming system with:
 
-To learn more about developing your project with Expo, look at the following resources:
+### Light Theme
+- Clean white backgrounds
+- Dark text for readability
+- Blue accent colors
+- Subtle shadows and borders
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Dark Theme
+- Dark backgrounds for reduced eye strain
+- Light text for contrast
+- Adjusted color palette for dark environments
+- Enhanced visual hierarchy
 
-## Join the community
+### Automatic Detection
+- Follows system theme preferences
+- Manual toggle available
+- Persistent theme selection
 
-Join our community of developers creating universal apps.
+## 📊 Data Structure
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Player Object
+```typescript
+type Player = {
+  key: number | string;
+  image: string | number;
+  name: string;
+  location: string;
+  age: number;
+  height: string;
+  points: number;
+  rebounds: number;
+  assists: number;
+  ratings: number;
+}
+```
+
+### Statistics Categories
+- **Points**: Scoring performance
+- **Rebounds**: Defensive rebounds
+- **Assists**: Playmaking ability
+- **Ratings**: Overall player rating
+
+## 🔧 Technical Stack
+
+### Core Technologies
+- **React Native**: Cross-platform mobile development
+- **Expo**: Development platform and tools
+- **TypeScript**: Type-safe JavaScript
+- **Expo Router**: File-based navigation
+
+### UI Libraries
+- **React Native Elements**: UI component library
+- **React Native Gifted Charts**: Data visualization
+- **Expo Linear Gradient**: Gradient effects
+- **React Native Vector Icons**: Icon library
+
+### State Management
+- **React Context**: Theme management
+- **AsyncStorage**: Local data persistence
+- **React Hooks**: State and lifecycle management
+
+### Styling
+- **StyleSheet**: React Native styling
+- **NativeWind**: Tailwind CSS for React Native
+- **Custom Theme System**: Comprehensive color management
+
+## 📱 Platform Support
+
+- ✅ **iOS**: Full support with native optimizations
+- ✅ **Android**: Full support with Material Design
+- ✅ **Web**: Responsive web application
+- ✅ **Expo Go**: Development and testing
+
+## 🔒 Data Privacy
+
+- All data is stored locally on the device
+- No external data transmission
+- User privacy is maintained
+- Data can be exported/imported manually
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow TypeScript best practices
+- Maintain consistent code formatting
+- Add appropriate error handling
+- Test on multiple platforms
+- Update documentation as needed
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with [Expo](https://expo.dev/) for rapid development
+- Icons provided by [Expo Vector Icons](https://expo.github.io/vector-icons/)
+- Charts powered by [React Native Gifted Charts](https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts)
+- Sample data generated for demonstration purposes
+
+---
+
+**Basketball Stats** - Your comprehensive basketball team management solution! 🏀📊
