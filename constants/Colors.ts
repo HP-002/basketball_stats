@@ -9,7 +9,7 @@ const tintColorDark = '#fff';
 export const Colors = {
   light: {
     primary: '#000',
-    headerBackground: '#3b82f6',
+    headerBackground: '#0d1843ff',
     headerText: '#ffffff',
     navbarBackground: '#ffffff',
     active: '#3b82f6',
@@ -49,8 +49,8 @@ export const Colors = {
   },
   dark: {
     primary: '#000',
-    headerBackground: '#93C5FD',
-    headerText: '#000',
+    headerBackground: '#0d1843ff',
+    headerText: '#f7f7f7ff',
     navbarBackground: '#1e1e1eff',
     active: '#93C5FD',
     inactive: '#fafafaff',

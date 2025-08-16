@@ -1,8 +1,8 @@
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { pickAndSaveImage } from '../../components/save-image';
 import { Player } from '../types';
-import { pickAndSaveImage } from './save-image';
 
 
 type AddPlayerScreenProps = {
@@ -14,32 +14,47 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
   const [image, setImage] = useState<string>(require('../../assets/images/react-logo.png'));
   const [name, setName] = useState('');
+  const [location, setLocation] = useState('')
+  const [age, setAge] = useState('')
+  const [height, setHeight] = useState('');
   const [points, setPoints] = useState('');
   const [rebounds, setRebounds] = useState('');
   const [assists, setAssists] = useState('');
+  const [ratings, setRatings] = useState('');
 
   const pickImage = async () => {
     const localUri = await pickAndSaveImage();
     if (localUri) {
-      console.log(localUri)
       setImage(localUri);
     }
   };
 
   const savePlayer = () => {
-    if (!name.trim()) return;
+    if (!name.trim()) return
+
+    const heightString = Number(height) ? `${(Number(height) / 12).toFixed(0)}' ${Number(height) % 12}"` : 'Unknown'
     addPlayer({
       image,
       name,
-      points: Number(points),
-      rebounds: Number(rebounds),
-      assists: Number(assists),
-    });
-    // setImage(require('../../assets/images/react-logo.png'))
-    setName('');
-    setPoints('');
-    setRebounds('');
-    setAssists('');
+      location: location.trim() || 'Unknown',
+      age: Number(age) || 0,
+      height: heightString,
+      points: Number(points) || 0,
+      rebounds: Number(rebounds) || 0,
+      assists: Number(assists) || 0,
+      ratings: Number(ratings) || 0,
+    })
+
+    setImage(require('../../assets/images/react-logo.png'))
+    setName('')
+    setLocation('')
+    setAge('')
+    setHeight('')
+    setLocation('')
+    setPoints('')
+    setRebounds('')
+    setAssists('')
+    setRatings('')
   };
 
   return (
@@ -76,6 +91,43 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
         </View>
 
         <View style={styles.statsRow}>
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, { color: colors.text }]}>Location</Text>
+            <TextInput 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
+              value={location} 
+              onChangeText={setLocation}
+              placeholder="Location"
+              placeholderTextColor={colors.inputPlaceholder}
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, { color: colors.text }]}>Age</Text>
+            <TextInput 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
+              value={age} 
+              onChangeText={setAge}
+              keyboardType="numeric"
+              placeholder="0  "
+              placeholderTextColor={colors.inputPlaceholder}
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={[styles.label, { color: colors.text }]}>Height (in inches)</Text>
+            <TextInput 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
+              value={height} 
+              onChangeText={setHeight}
+              keyboardType="numeric"
+              placeholder="inches"
+              placeholderTextColor={colors.inputPlaceholder}
+            />
+          </View>
+        </View>
+
+        <View style={styles.statsRow}>
           <View style={styles.statInput}>
             <Text style={[styles.label, { color: colors.text }]}>Points</Text>
             <TextInput 
@@ -108,6 +160,18 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
               onChangeText={setAssists} 
               keyboardType="numeric"
               placeholder="0"
+              placeholderTextColor={colors.inputPlaceholder}
+            />
+          </View>
+
+          <View style={styles.statInput}>
+            <Text style={[styles.label, { color: colors.text }]}>Ratings</Text>
+            <TextInput 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
+              value={points} 
+              onChangeText={setRatings} 
+              keyboardType="numeric"
+              placeholder="Out of 10"
               placeholderTextColor={colors.inputPlaceholder}
             />
           </View>
@@ -195,8 +259,7 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 12,
-    marginBottom: 30,
+    gap: 8,
   },
   statInput: {
     flex: 1,

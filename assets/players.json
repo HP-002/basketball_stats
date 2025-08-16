@@ -1,0 +1,57 @@
+[
+  {
+    "image": "https://via.placeholder.com/150",
+    "name": "Marcus Johnson",
+    "location": "Los Angeles, USA",
+    "age": 27,
+    "height": "6'7\"",
+    "points": 24,
+    "rebounds": 8,
+    "assists": 5,
+    "ratings": 92
+  },
+  {
+    "image": "https://via.placeholder.com/150",
+    "name": "Darius Carter",
+    "location": "Chicago, USA",
+    "age": 25,
+    "height": "6'4\"",
+    "points": 18,
+    "rebounds": 6,
+    "assists": 7,
+    "ratings": 88
+  },
+  {
+    "image": "https://via.placeholder.com/150",
+    "name": "Luis Fernandez",
+    "location": "Madrid, Spain",
+    "age": 29,
+    "height": "6'9\"",
+    "points": 20,
+    "rebounds": 10,
+    "assists": 4,
+    "ratings": 90
+  },
+  {
+    "image": "https://via.placeholder.com/150",
+    "name": "Kenji Nakamura",
+    "location": "Tokyo, Japan",
+    "age": 23,
+    "height": "6'2\"",
+    "points": 16,
+    "rebounds": 3,
+    "assists": 9,
+    "ratings": 85
+  },
+  {
+    "image": "https://via.placeholder.com/150",
+    "name": "Ethan Williams",
+    "location": "Toronto, Canada",
+    "age": 30,
+    "height": "6'5\"",
+    "points": 21,
+    "rebounds": 7,
+    "assists": 6,
+    "ratings": 89
+  }
+]

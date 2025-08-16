@@ -1,9 +1,11 @@
+import FilterButton from '@/components/FilterButton';
+import PlayerCard from '@/components/PlayerCard';
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
-import { Dimensions, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Dimensions, FlatList, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { loadPlayers, savePlayers, searchPlayers, sortPlayers, traits } from '../../components/filter-functionality';
 import { Player } from '../types';
-import { loadPlayers, savePlayers, searchPlayers, sortPlayers, traits } from './filter-functionality';
 
 type HomeScreenProps = {
     players: Player[];
@@ -52,7 +54,6 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                 onChangeText={(query) => handleSearchPlayers(query)}
             />
 
-            {/* Wrapper for the blur effect */}
             <View style={styles.scrollContainer}>
                 <ScrollView
                     horizontal
@@ -61,17 +62,12 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                     contentContainerStyle={styles.buttonContentContainer}
                 >
                     {traits.map((trait, index) => (
-                        <Pressable 
+                        <FilterButton
                             key={index}
-                            style={({ pressed }) => [
-                                styles.button,
-                                { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
-                                pressed && styles.buttonPressed
-                            ]} 
-                            onPress={() => handleSortPlayers(trait)}
-                        >
-                            <Text style={[styles.buttonText, { color: colors.buttonText }]}>{trait}</Text>
-                        </Pressable>
+                            index={index}
+                            trait={trait}
+                            handleSortPlayers={handleSortPlayers}
+                        ></FilterButton>
                     ))}
                 </ScrollView>
                 
@@ -103,13 +99,7 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                     columnWrapperStyle={numberOfColums > 1 ? { justifyContent: 'space-around', gap: 15 } : null}
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <View style={[styles.card, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
-                            <Image source={{ uri: item.image }} style={[styles.image, { borderColor: colors.imageBorder }]}></Image>
-                            <Text style={[styles.name, { color: colors.text }]}>{item.name}</Text>
-                            <Text style={[styles.substats, { color: colors.text }]}>Points: {item.points}</Text>
-                            <Text style={[styles.substats, { color: colors.text }]}>Rebounds: {item.rebounds}</Text>
-                            <Text style={[styles.substats, { color: colors.text }]}>Assists: {item.assists}</Text>
-                        </View>
+                        <PlayerCard player={item} />
                     )}
                 />
                 
@@ -167,27 +157,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         alignItems: 'center',
     },
-    button: {
-        height: 40,
-        marginRight: 12,
-        paddingHorizontal: 20,
-        paddingVertical: 8,
-        borderRadius: 20,
-        justifyContent: 'center',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        elevation: 3,
-    },
-    buttonPressed: {
-        opacity: 0.8,
-        transform: [{ scale: 0.98 }],
-    },
-    buttonText: {
-        fontSize: 14,
-        fontWeight: '600',
-        textAlign: 'center',
-    },
     leftBlur: {
         position: 'absolute',
         left: 0,
@@ -229,34 +198,4 @@ const styles = StyleSheet.create({
         height: 15,
         zIndex: 1,
     },
-    card: {
-        padding: 16,
-        marginVertical: 8,
-        width: 150,
-        borderRadius: 12,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        elevation: 8,
-    },
-    image: {
-        width: 70,
-        height: 70,
-        alignSelf: 'center',
-        borderRadius: 35,
-        marginBottom: 8,
-        borderWidth: 2,
-    },
-    name: {
-        alignSelf: 'center',
-        fontSize: 16,
-        fontWeight: '700',
-        marginBottom: 8,
-        textAlign: 'center',
-    },
-    substats: {
-        fontSize: 12,
-        fontWeight: '700',
-        marginBottom: 2,
-    }
 });

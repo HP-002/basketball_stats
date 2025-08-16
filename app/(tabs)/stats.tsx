@@ -1,10 +1,12 @@
+import TeamStatsCard from '@/components/TeamStatsCard';
+import TopPerformerCard from '@/components/TopPerformerCard';
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Dimensions, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { BarChart, LineChart } from 'react-native-gifted-charts';
+import { calculateAverage, getTopPerformer, playerStats } from '../../components/stats-functionality';
 import { Player } from '../types';
-import { calculateAverage, getTopPerformer, playerStats, TeamStatsCard, TopPerformerCard } from './stats-functionality';
 
 type StatsScreenProps = {
     players: Player[];
@@ -38,7 +40,6 @@ export default function StatsScreen({ players }: StatsScreenProps) {
         dataPointText: player.assists.toString(),
     }));
 
-    // Screen width for responsive charts
     const screenWidth = Dimensions.get('window').width;
     const chartWidth = screenWidth - 60;
 
@@ -67,13 +68,12 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                 >
                     <View style={styles.section}>
                         <Text style={[styles.sectionTitle, { color: colors.text }]}>Top Performers</Text>
-
                         {
                             playerStats.map((stat) => {
                                 const topPerformer = getTopPerformer(players, stat as keyof Player)
                                 return (
                                     <TopPerformerCard
-                                        title="Leading Scorer"
+                                        title={`Leading Performer ${stat.charAt(0).toUpperCase() + stat.slice(1)}`}
                                         player={topPerformer}
                                         stat={stat}
                                         statValue={topPerformer ? topPerformer[stat as keyof Player] : 0}
@@ -83,7 +83,6 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                         }
                     </View>
 
-                    {/* Team Stats Section */}
                     <View style={styles.section}>
                         <TeamStatsCard
                             avgPoints={avgPoints}
@@ -165,7 +164,6 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                     )}
                 </ScrollView>
 
-                {/* Top blur gradient */}
                 <LinearGradient
                     colors={[colors.linearGradient, 'transparent']}
                     start={{ x: 0, y: 0 }}
@@ -174,7 +172,6 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                     pointerEvents="none"
                 />
 
-                {/* Bottom blur gradient */}
                 <LinearGradient
                     colors={['transparent', colors.linearGradient]}
                     start={{ x: 0, y: 0 }}

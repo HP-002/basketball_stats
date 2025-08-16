@@ -1,8 +1,10 @@
+import starterPlayers from '@/assets/players.json';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Player } from '../types';
+import { Player } from '../app/types';
 
 const PLAYERS_KEY = 'players'
-let traits = ['Name', 'Points', 'Rebounds', 'Assists']
+let traits = ['Name', 'Age', 'Height', 'Points', 'Rebounds', 'Assists', 'Ratings']
+
 
 function sortPlayers<T extends keyof Player>(players: Player[], trait: T): Player[] {
     trait = String(trait).toLowerCase() as T
@@ -16,6 +18,7 @@ function sortPlayers<T extends keyof Player>(players: Player[], trait: T): Playe
     return sorted
 };
 
+
 function searchPlayers(players: Player[], query: string): Player[] {
     if (!query.trim()) return players
 
@@ -27,6 +30,7 @@ function searchPlayers(players: Player[], query: string): Player[] {
     })
 }
 
+
 async function savePlayers(players: Player[]) {
     try {
         const jsonValue = JSON.stringify(players);
@@ -37,18 +41,25 @@ async function savePlayers(players: Player[]) {
     }
 }
 
+
 async function loadPlayers(): Promise<Player[]> {
     try {
-        const jsonValue = await AsyncStorage.getItem(PLAYERS_KEY)
-        if (jsonValue) {
-            return JSON.parse(jsonValue) as Player[]
-        }
-        return []
+    const jsonValue = await AsyncStorage.getItem(PLAYERS_KEY);
+
+    if (jsonValue) {
+      // ✅ Return previously saved players
+      return JSON.parse(jsonValue) as Player[];
     }
-    catch(error) {
-        console.error("Error loading players:", error)
-        return []
-    }
+
+    // ✅ If no data exists yet, use starter players
+    await savePlayers(starterPlayers);
+    return starterPlayers as Player[];
+  } catch (error) {
+    console.error("Error loading players:", error);
+    return [];
+  }
 }
+
+
 export { loadPlayers, savePlayers, searchPlayers, sortPlayers, traits };
 

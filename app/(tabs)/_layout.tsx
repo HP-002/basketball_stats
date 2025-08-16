@@ -49,6 +49,9 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: true,
         headerShown: true,
+        animation: 'shift',
+        lazy: false,
+        tabBarHideOnKeyboard: false,
         headerStyle: {
           backgroundColor: colors.headerBackground,
           elevation: 0,
@@ -80,7 +83,7 @@ export default function TabLayout() {
           marginBottom: Platform.OS === 'ios' ? 20 : 50,
           position: 'absolute',
         },
-        tabBarActiveTintColor: colors.headerBackground,
+        tabBarActiveTintColor: colors.active,
         tabBarInactiveTintColor: colors.inactive,
         tabBarLabelStyle: {
           fontSize: 12,
