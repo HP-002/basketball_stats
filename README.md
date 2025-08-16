@@ -32,6 +32,12 @@ A comprehensive React Native mobile application for managing and analyzing baske
 - **Image Handling**: Profile picture upload and management
 - **Keyboard Handling**: Optimized input experience across platforms
 
+## Demo
+
+### IOS Demo Link
+
+![IOS Demo GIF](https://imgur.com/a/ujqr7SU)
+
 ## 📁 Project Structure
 
 ```
