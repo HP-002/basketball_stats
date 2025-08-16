@@ -1,13 +1,10 @@
-import { defaultProfile } from "@/app/types";
+import { defaultProfile, Player } from "@/app/types";
 import { useAppTheme } from "@/hooks/AppThemeContext";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 type TopPerformerCardProps = {
     title: string;
-    player?: {
-        image: string;
-        name: string;
-    } | null;
+    player?: Player | null;
     stat: string;
     statValue: number | string;
 }
@@ -28,7 +25,7 @@ export default function TopPerformerCard({ title, player, stat, statValue}: TopP
     }
 
     let imageSource = defaultProfile
-    if (player.image && (player.image.startsWith("http") || player.image.startsWith("file:") || player.image.startsWith("data:"))) {
+    if (player.image && typeof player.image === 'string' && (player.image.startsWith("http") || player.image.startsWith("file:") || player.image.startsWith("data:"))) {
         imageSource = { uri: player.image }
     }
 

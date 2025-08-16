@@ -1,5 +1,6 @@
 [
   {
+    "key": 0,
     "image": "https://picsum.photos/100",
     "name": "Marcus Johnson",
     "location": "Los Angeles, USA",
@@ -11,6 +12,7 @@
     "ratings": 92
   },
   {
+    "key": 1,
     "image": "https://picsum.photos/150",
     "name": "Darius Carter",
     "location": "Chicago, USA",
@@ -22,6 +24,7 @@
     "ratings": 88
   },
   {
+    "key": 2,
     "image": "https://picsum.photos/200",
     "name": "Luis Fernandez",
     "location": "Madrid, Spain",
@@ -33,6 +36,7 @@
     "ratings": 90
   },
   {
+    "key": 3,
     "image": "https://picsum.photos/250",
     "name": "Kenji Nakamura",
     "location": "Tokyo, Japan",
@@ -44,6 +48,7 @@
     "ratings": 85
   },
   {
+    "key": 4,
     "image": "https://picsum.photos/300",
     "name": "Ethan Williams",
     "location": "Toronto, Canada",

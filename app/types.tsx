@@ -1,4 +1,5 @@
 export type Player = {
+    key: number | string,
     image: string | number,
     name: string,
     location: string,

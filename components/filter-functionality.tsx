@@ -20,8 +20,6 @@ function sortPlayers<T extends keyof Player>(players: Player[], trait: T): Playe
 
 
 function searchPlayers(players: Player[], query: string): Player[] {
-    if (!query.trim()) return players
-
     const terms = query.toLowerCase().split(/\s+/);
 
     return players.filter((player) => {
@@ -33,9 +31,9 @@ function searchPlayers(players: Player[], query: string): Player[] {
 
 async function savePlayers(players: Player[]) {
     try {
-        const jsonValue = JSON.stringify(players);
+        const allPlayers = await loadPlayers()
+        const jsonValue = JSON.stringify(allPlayers);
         await AsyncStorage.setItem(PLAYERS_KEY, jsonValue);
-        console.log("Players saved successfully!");
     } catch (error) {
         console.error("Error saving players:", error);
     }

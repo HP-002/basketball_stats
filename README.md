@@ -1,8 +1,68 @@
-# Welcome to your Expo app 👋
+# Basketball Stats
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Table of Contents
 
-## Get started
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Available Scripts](#available-scripts)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Features
+
+- Built with [Expo](https://expo.dev) for rapid React Native development
+- File-based routing for easy navigation
+- Ready-to-use development, emulator, and simulator support
+- Simple project reset to start fresh
+- Community resources and documentation links
+
+## Project Structure
+
+```
+basketball_stats/
+├── app/                # Main application code
+├── app-example/        # Example starter code (after reset)
+├── assets/             # Images, fonts, etc.
+├── node_modules/       
+├── package.json        
+├── README.md           
+└── ...
+```
+
+## Available Scripts
+
+- `npm install` – Install dependencies
+- `npx expo start` – Start the Expo development server
+- `npm run reset-project` – Reset to a fresh project state
+
+## Usage
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Start the app**
+
+   ```bash
+   npx expo start
+   ```
+
+3. **Open the app**  
+   Use the Expo CLI to open your app in a development build, Android emulator, iOS simulator, or Expo Go.
+
+4. **Develop**  
+   Edit files in the `app` directory. Changes reload automatically.
+
+## Contributing
+
+Contributions are welcome! Please open issues or pull requests for improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License.
 
 1. Install dependencies
 

@@ -3,13 +3,15 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
+import { Platform } from "react-native";
+
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
     primary: '#000',
-    headerBackground: '#0d1843ff',
+    headerBackground: '#912828ff',
     headerText: '#ffffff',
     navbarBackground: '#ffffff',
     active: '#3b82f6',
@@ -27,7 +29,7 @@ export const Colors = {
     imageBorder: '#3b82f6',
     imageOverlayBackground: 'rgba(0, 0, 0, 0.4)',
     imageOverlayText: '#ffffff',
-    linearGradient: '#e4e4e7',
+    linearGradient: Platform.OS === 'ios' ? 'rgba(228,228,231,0.1)' : 'rgba(228,228,231,0.9)',
     sectionTitle: '#000000',
     cardTitle: '#000000',
     legendText: '#000000',
@@ -49,7 +51,7 @@ export const Colors = {
   },
   dark: {
     primary: '#000',
-    headerBackground: '#0d1843ff',
+    headerBackground: '#912828ff',
     headerText: '#f7f7f7ff',
     navbarBackground: '#1e1e1eff',
     active: '#93C5FD',
@@ -67,16 +69,16 @@ export const Colors = {
     imageBorder: '#62abebff',
     imageOverlayBackground: 'rgba(255, 254, 254, 0.4)',
     imageOverlayText: '#000000ff',
-    linearGradient: '#000000ff',
+    linearGradient: 'rgba(0,0,0,0.6)',
     sectionTitle: '#ffffffff',
     cardTitle: '#ffffffff',
     legendText: '#ffffffff',
     avgText: '#93C5FD',
     avgLabel: '#afb3bcff',
-    tint: tintColorLight,
+    tint: tintColorDark,
     icon: '#ffffffff',
     tabIconDefault: '#9ca3af',
-    tabIconSelected: tintColorLight,
+    tabIconSelected: tintColorDark,
     chartRed: '#EF4444',
     chartGreen: '#73f2a2ff',
     chartBlue: '#93C5FD',

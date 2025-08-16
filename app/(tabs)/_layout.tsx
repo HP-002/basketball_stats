@@ -1,3 +1,4 @@
+import { loadPlayers, savePlayers } from '@/components/filter-functionality';
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,6 +16,7 @@ const ThemeToggle = () => {
 
   return (
     <Pressable
+    key={"themeToggle"}
     onPress={toggleTheme}
       style={{
         width: 36,
@@ -40,8 +42,10 @@ export default function TabLayout() {
   const [players, setPlayers] = useState<Player[]>([]);
   const colors = useAppTheme().colors
 
-  const addPlayer = (player: Player) => {
-    setPlayers((prev) => [...prev, player]);
+  const addPlayer = async (player: Player) => {
+    const newPlayers = [...await loadPlayers(), player]
+    savePlayers(newPlayers)
+    setPlayers(newPlayers);
   };
 
   return (
@@ -72,7 +76,7 @@ export default function TabLayout() {
           borderTopWidth: 0,
           paddingBottom: Platform.OS === 'ios' ? 35 : 20,
           paddingTop: 12,
-          height: Platform.OS === 'ios' ? 100 : 85,
+          height: Platform.OS === 'ios' ? 90 : 85,
           shadowColor: colors.shadowColor,
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.1,
@@ -80,7 +84,7 @@ export default function TabLayout() {
           elevation: 10,
           borderRadius: 50,
           marginHorizontal: 15,
-          marginBottom: Platform.OS === 'ios' ? 20 : 50,
+          marginBottom: Platform.OS === 'ios' ? 40 : 50,
           position: 'absolute',
         },
         tabBarActiveTintColor: colors.active,
@@ -143,7 +147,6 @@ export default function TabLayout() {
           tabBarLabel: 'Statistics',
         }}
       >
-        {/* {() => <AddPlayerScreen addPlayer={addPlayer} />} */}
         {() => <StatsScreen players={players} />}
       </Tab.Screen>
     </Tab.Navigator>

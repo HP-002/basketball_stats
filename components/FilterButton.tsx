@@ -7,7 +7,7 @@ export default function FilterButton({ index, trait, handleSortPlayers}: { index
 
     return (
         <Pressable
-            key={index}
+            key={String(index) + String(trait)}
             style={({ pressed }) => [
                 styles.button,
                 { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },

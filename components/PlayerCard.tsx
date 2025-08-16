@@ -11,8 +11,6 @@ export default function PlayerCard({ player }: { player: Player }) {
         imageSource = { uri: player.image }
     }
 
-    console.log(imageSource)
-
     return (
         <View style={[styles.card, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
             <Image source={typeof player.image === 'number' ? player.image : imageSource} style={[styles.image, { borderColor: colors.imageBorder }]}></Image>

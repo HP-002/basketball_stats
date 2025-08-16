@@ -45,7 +45,7 @@ export default function StatsScreen({ players }: StatsScreenProps) {
 
     if (players.length === 0) {
         return (
-            <View style={[styles.container, { backgroundColor: colors.background}]}>
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
                 <View style={styles.emptyState}>
                     <Text style={[styles.emptyStateTitle, { color: colors.text }]}>No Statistics Available</Text>
                     <Text style={[styles.emptyStateText, { color: colors.text }]}>Add some players to view statistics</Text>
@@ -69,10 +69,11 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                     <View style={styles.section}>
                         <Text style={[styles.sectionTitle, { color: colors.text }]}>Top Performers</Text>
                         {
-                            playerStats.map((stat) => {
+                            playerStats.map((stat, index) => {
                                 const topPerformer = getTopPerformer(players, stat as keyof Player)
                                 return (
                                     <TopPerformerCard
+                                        key={stat}
                                         title={`Leading Performer ${stat.charAt(0).toUpperCase() + stat.slice(1)}`}
                                         player={topPerformer}
                                         stat={stat}
@@ -91,13 +92,11 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                         />
                     </View>
 
-                    {/* Charts Section */}
                     {players.length > 0 && (
                         <View style={styles.section}>
                             <Text style={[styles.sectionTitle, { color: colors.text }]}>Player Comparison</Text>
 
-                            {/* Points Bar Chart */}
-                            <View style={[styles.chartContainer, { backgroundColor: colors.cardBackground , shadowColor: colors.shadowColor}]}>
+                            <View style={[styles.chartContainer, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
                                 <Text style={[styles.chartTitle, { color: colors.cardTitle }]}>Points per Player</Text>
                                 <BarChart
                                     data={pointsData}
@@ -115,8 +114,7 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                                 />
                             </View>
 
-                            {/* Multi-stat Line Chart */}
-                            <View style={[styles.chartContainer, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor}]}>
+                            <View style={[styles.chartContainer, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
                                 <Text style={[styles.chartTitle, { color: colors.cardTitle }]}>Stats Comparison</Text>
                                 <LineChart
                                     data={lineChartData}
@@ -144,7 +142,6 @@ export default function StatsScreen({ players }: StatsScreenProps) {
                                     ) + 3}
                                 />
 
-                                {/* Chart Legend */}
                                 <View style={styles.chartLegend}>
                                     <View style={styles.legendItem}>
                                         <View style={[styles.legendDot, { backgroundColor: colors.chartRed }]} />

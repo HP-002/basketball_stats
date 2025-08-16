@@ -3,7 +3,7 @@ import PlayerCard from '@/components/PlayerCard';
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
-import { Dimensions, FlatList, Platform, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { loadPlayers, savePlayers, searchPlayers, sortPlayers, traits } from '../../components/filter-functionality';
 import { Player } from '../types';
 
@@ -21,18 +21,21 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
         savePlayers(players)
     }, [players])
 
-    const handleSortPlayers = (trait: string) => {
-        const sortedPlayers = sortPlayers(players, trait as keyof Player)
+    const handleSortPlayers = async (trait: string) => {
+        const allPlayers = await loadPlayers()
+        const sortedPlayers = sortPlayers(allPlayers, trait as keyof Player)
         setPlayers(sortedPlayers)
     }
 
-    const handleSearchPlayers = (query: string) => {
+    const handleSearchPlayers = async (query: string) => {
+        const allPlayers = await loadPlayers()
+
         if (query.trim() === '') {
-            loadPlayers().then((loadedPlayers) => setPlayers(loadedPlayers))
+            setPlayers(allPlayers)
             return;
         }
 
-        const searchedPlayers = searchPlayers(players, query)
+        const searchedPlayers = searchPlayers(allPlayers, query)
         setPlayers(searchedPlayers)
     }
 
@@ -46,82 +49,95 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
     const colors = useAppTheme().colors
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.background }]}>
-            <TextInput
-                style={[styles.search, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-                placeholder='Search players...'
-                placeholderTextColor={colors.inputPlaceholder}
-                onChangeText={(query) => handleSearchPlayers(query)}
-            />
-
-            <View style={styles.scrollContainer}>
+        <KeyboardAvoidingView
+            style={{ flex: 1, marginTop: 0, paddingTop: 0 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{ marginTop: 0, paddingTop: 0 }}>
                 <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.buttonContainer}
-                    contentContainerStyle={styles.buttonContentContainer}
+                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 20, marginTop: 0, paddingTop: 0 }}
+                    keyboardShouldPersistTaps="handled"
                 >
-                    {traits.map((trait, index) => (
-                        <FilterButton
-                            key={index}
-                            index={index}
-                            trait={trait}
-                            handleSortPlayers={handleSortPlayers}
-                        ></FilterButton>
-                    ))}
-                </ScrollView>
-                
-                {/* Left blur gradient */}
-                <LinearGradient
-                    colors={[colors.linearGradient, 'transparent']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.leftBlur}
-                    pointerEvents="none"
-                />
-                
-                {/* Right blur gradient */}
-                <LinearGradient
-                    colors={['transparent', colors.linearGradient]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    style={styles.rightBlur}
-                    pointerEvents="none"
-                />
-            </View>
+                    <View style={[styles.container, { backgroundColor: colors.background }]}>
+                        <TextInput
+                            style={[styles.search, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                            placeholder='Search players...'
+                            placeholderTextColor={colors.inputPlaceholder}
+                            onChangeText={(query) => handleSearchPlayers(query)}
+                        />
 
-            {/* Wrapper for the FlatList blur effect */}
-            <View style={styles.flatListContainer}>
-                <FlatList
-                    data={players}
-                    style={styles.flatlist}
-                    numColumns={numberOfColums}
-                    columnWrapperStyle={numberOfColums > 1 ? { justifyContent: 'space-around', gap: 15 } : null}
-                    keyExtractor={(_, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <PlayerCard player={item} />
-                    )}
-                />
-                
-                {/* Top blur gradient */}
-                <LinearGradient
-                    colors={[colors.linearGradient, 'transparent']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={styles.topBlur}
-                    pointerEvents="none"
-                />
-                
-                {/* Bottom blur gradient */}
-                <LinearGradient
-                    colors={['transparent', colors.linearGradient]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0, y: 1 }}
-                    style={styles.bottomBlur}
-                    pointerEvents="none"
-                />
-            </View>
-        </View>
+                        <View style={styles.scrollContainer}>
+                            <ScrollView
+                                horizontal
+                                showsHorizontalScrollIndicator={false}
+                                style={styles.buttonContainer}
+                                contentContainerStyle={styles.buttonContentContainer}
+                            >
+                                {traits.map((trait, index) => (
+                                    <FilterButton
+                                        key={trait}
+                                        index={index}
+                                        trait={trait}
+                                        handleSortPlayers={handleSortPlayers}
+                                    ></FilterButton>
+                                ))}
+                            </ScrollView>
+
+                            {/* Left blur gradient */}
+                            <LinearGradient
+                                colors={[colors.linearGradient, 'transparent']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                style={styles.leftBlur}
+                                pointerEvents="none"
+                            />
+
+                            {/* Right blur gradient */}
+                            <LinearGradient
+                                colors={['transparent', colors.linearGradient]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 1, y: 0 }}
+                                style={styles.rightBlur}
+                                pointerEvents="none"
+                            />
+                        </View>
+
+                        {/* Wrapper for the FlatList blur effect */}
+                        <View style={styles.flatListContainer}>
+                            <FlatList
+                                data={players}
+                                style={styles.flatlist}
+                                numColumns={numberOfColums}
+                                columnWrapperStyle={numberOfColums > 1 ? { justifyContent: 'space-around', gap: 15 } : null}
+                                keyExtractor={(_, index) => index.toString()}
+                                renderItem={({ item }) => (
+                                    <PlayerCard player={item} />
+                                )}
+                            />
+
+                            {/* Top blur gradient */}
+                            <LinearGradient
+                                colors={[colors.linearGradient, 'transparent']}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 0, y: 1 }}
+                                style={styles.topBlur}
+                                pointerEvents="none"
+                            />
+
+                            {/* Bottom blur gradient */}
+                            <LinearGradient
+                                colors={['transparent', colors.linearGradient]}
+                                start={{ x: 0, y: 0 }}
+                                end={{ x: 0, y: 1 }}
+                                style={styles.bottomBlur}
+                                pointerEvents="none"
+                            />
+                        </View>
+                    </View>
+                </ScrollView>
+            </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        paddingBottom: Platform.OS === 'ios' ? 120 : 105,
+        paddingBottom: Platform.OS === 'ios' ? 100 : 105,
     },
     search: {
         height: 45,

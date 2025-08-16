@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { LogBox } from 'react-native';
 import { Player } from '../types';
 import AddPlayerScreen from './add-player';
 import HomeScreen from './home';
@@ -14,6 +15,14 @@ export type RootTabParamList = {
 };
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested',
+  'Warning: Text strings must be rendered within a <Text> component'
+]);
+
+console.warn = () => {};
+console.error = () => {};
 
 export default function App() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -43,13 +52,19 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Home">
-          {() => <HomeScreen players={players} setPlayers={setPlayers} />}
+          {() =>
+            <HomeScreen players={players} setPlayers={setPlayers} />
+          }
         </Tab.Screen>
         <Tab.Screen name="AddPlayer">
-          {() => <AddPlayerScreen addPlayer={addPlayer} />}
+          {() =>
+            <AddPlayerScreen addPlayer={addPlayer} />
+          }
         </Tab.Screen>
         <Tab.Screen name="Stats">
-          {() => <StatsScreen players={players} />}
+          {() =>
+            <StatsScreen players={players} />
+          }
         </Tab.Screen>
       </Tab.Navigator>
     </NavigationContainer>

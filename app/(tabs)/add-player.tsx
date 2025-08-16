@@ -1,6 +1,6 @@
 import { useAppTheme } from '@/hooks/AppThemeContext';
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Keyboard, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from 'react-native';
 import { pickAndSaveImage } from '../../components/save-image';
 import { defaultProfile, Player } from '../types';
 
@@ -40,6 +40,7 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
     const heightString = Number(height) ? `${(Number(height) / 12).toFixed(0)}' ${Number(height) % 12}"` : 'Unknown'
     addPlayer({
+      key: name,
       image,
       name,
       location: location.trim() || 'Unknown',
@@ -64,137 +65,151 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={styles.title}>New Player</Text>
-      <View style={styles.imageSection}>
-        <Pressable
-          onPress={pickImage}
-          style={({ pressed }) => [
-            styles.imagePressable,
-            pressed && styles.imagePressed
-          ]}
+    <KeyboardAvoidingView
+      style={{ flex: 1, marginTop: 0, paddingTop: 0 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false} style={{  marginTop: 0, paddingTop: 0 }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 20,  marginTop: 0, paddingTop: 0 }}
+          keyboardShouldPersistTaps="handled"
         >
-          <Image
-            source={imageSource}
-            style={[styles.image, { borderColor: colors.imageBorder }]}
-          />
-          <View style={[styles.imageOverlay, { backgroundColor: colors.imageOverlayBackground }]}>
-            <Text style={[styles.imageOverlayText, { color: colors.imageOverlayText }]}>Change</Text>
+          <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <Text style={styles.title}>New Player</Text>
+            <View style={styles.imageSection}>
+              <Pressable
+                onPress={pickImage}
+                style={({ pressed }) => [
+                  styles.imagePressable,
+                  pressed && styles.imagePressed
+                ]}
+              >
+                <Image
+                  source={imageSource}
+                  style={[styles.image, { borderColor: colors.imageBorder }]}
+                />
+                <View style={[styles.imageOverlay, { backgroundColor: colors.imageOverlayBackground }]}>
+                  <Text style={[styles.imageOverlayText, { color: colors.imageOverlayText }]}>Change</Text>
+                </View>
+              </Pressable>
+            </View>
+
+            <View style={styles.formSection}>
+              <View style={styles.inputGroup}>
+                <Text style={[styles.label, { color: colors.text }]}>Player Name</Text>
+                <TextInput
+                  style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                  value={name}
+                  onChangeText={setName}
+                  placeholder="Enter player name"
+                  placeholderTextColor={colors.inputPlaceholder}
+                />
+              </View>
+
+              <View style={styles.statsRow}>
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: colors.text }]}>Location</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={location}
+                    onChangeText={setLocation}
+                    placeholder="Location"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: colors.text }]}>Age</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={age}
+                    onChangeText={setAge}
+                    keyboardType="numeric"
+                    placeholder="0  "
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+
+                <View style={styles.inputGroup}>
+                  <Text style={[styles.label, { color: colors.text }]}>Height (inches)</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={height}
+                    onChangeText={setHeight}
+                    keyboardType="numeric"
+                    placeholder="inches"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.statsRow}>
+                <View style={styles.statInput}>
+                  <Text style={[styles.label, { color: colors.text }]}>Points</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={points}
+                    onChangeText={setPoints}
+                    keyboardType="numeric"
+                    placeholder="0"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+
+                <View style={styles.statInput}>
+                  <Text style={[styles.label, { color: colors.text }]}>Rebounds</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={rebounds}
+                    onChangeText={setRebounds}
+                    keyboardType="numeric"
+                    placeholder="0"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+
+                <View style={styles.statInput}>
+                  <Text style={[styles.label, { color: colors.text }]}>Assists</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={assists}
+                    onChangeText={setAssists}
+                    keyboardType="numeric"
+                    placeholder="0"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+
+                <View style={styles.statInput}>
+                  <Text style={[styles.label, { color: colors.text }]}>Ratings</Text>
+                  <TextInput
+                    style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+                    value={ratings}
+                    onChangeText={setRatings}
+                    keyboardType="numeric"
+                    placeholder="0"
+                    placeholderTextColor={colors.inputPlaceholder}
+                  />
+                </View>
+              </View>
+
+              <Pressable
+                style={({ pressed }) => [
+                  styles.addButton,
+                  { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
+                  pressed && styles.addButtonPressed
+                ]}
+                onPress={savePlayer}
+              >
+                <Text style={[styles.addButtonText, { color: colors.buttonText }]}>Add Player</Text>
+              </Pressable>
+            </View>
           </View>
-        </Pressable>
-      </View>
 
-      <View style={styles.formSection}>
-        <View style={styles.inputGroup}>
-          <Text style={[styles.label, { color: colors.text }]}>Player Name</Text>
-          <TextInput
-            style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-            value={name}
-            onChangeText={setName}
-            placeholder="Enter player name"
-            placeholderTextColor={colors.inputPlaceholder}
-          />
-        </View>
-
-        <View style={styles.statsRow}>
-          <View style={styles.inputGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Location</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={location}
-              onChangeText={setLocation}
-              placeholder="Location"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Age</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={age}
-              onChangeText={setAge}
-              keyboardType="numeric"
-              placeholder="0  "
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={[styles.label, { color: colors.text }]}>Height (in inches)</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={height}
-              onChangeText={setHeight}
-              keyboardType="numeric"
-              placeholder="inches"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-        </View>
-
-        <View style={styles.statsRow}>
-          <View style={styles.statInput}>
-            <Text style={[styles.label, { color: colors.text }]}>Points</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={points}
-              onChangeText={setPoints}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-
-          <View style={styles.statInput}>
-            <Text style={[styles.label, { color: colors.text }]}>Rebounds</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={rebounds}
-              onChangeText={setRebounds}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-
-          <View style={styles.statInput}>
-            <Text style={[styles.label, { color: colors.text }]}>Assists</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={assists}
-              onChangeText={setAssists}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-
-          <View style={styles.statInput}>
-            <Text style={[styles.label, { color: colors.text }]}>Ratings</Text>
-            <TextInput
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
-              value={points}
-              onChangeText={setRatings}
-              keyboardType="numeric"
-              placeholder="0"
-              placeholderTextColor={colors.inputPlaceholder}
-            />
-          </View>
-        </View>
-
-        <Pressable
-          style={({ pressed }) => [
-            styles.addButton,
-            { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
-            pressed && styles.addButtonPressed
-          ]}
-          onPress={savePlayer}
-        >
-          <Text style={[styles.addButtonText, { color: colors.buttonText }]}>Add Player</Text>
-        </Pressable>
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -202,6 +217,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: 0,
   },
   title: {
     fontSize: 24,
