@@ -20,7 +20,7 @@ const ThemeToggle = () => {
         width: 36,
         height: 36,
         borderRadius: 18,
-        backgroundColor: colors.surface,
+        backgroundColor: colors.buttonBackground,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 15,
@@ -38,6 +38,7 @@ const ThemeToggle = () => {
 
 export default function TabLayout() {
   const [players, setPlayers] = useState<Player[]>([]);
+  const colors = useAppTheme().colors
 
   const addPlayer = (player: Player) => {
     setPlayers((prev) => [...prev, player]);
@@ -49,7 +50,7 @@ export default function TabLayout() {
         tabBarShowLabel: true,
         headerShown: true,
         headerStyle: {
-          backgroundColor: '#3b82f6',
+          backgroundColor: colors.headerBackground,
           elevation: 0,
           shadowOpacity: 0,
           borderBottomWidth: 0,
@@ -58,18 +59,18 @@ export default function TabLayout() {
         headerTitleStyle: {
           fontSize: 24,
           fontWeight: '700',
-          color: '#ffffff',
+          color: colors.headerText,
           marginTop: Platform.OS === 'ios' ? 10 : 0,
         },
         headerTitleAlign: 'center',
         headerRight: () => <ThemeToggle />,
         tabBarStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: colors.navbarBackground,
           borderTopWidth: 0,
           paddingBottom: Platform.OS === 'ios' ? 35 : 20,
           paddingTop: 12,
           height: Platform.OS === 'ios' ? 100 : 85,
-          shadowColor: '#000',
+          shadowColor: colors.shadowColor,
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.1,
           shadowRadius: 8,
@@ -79,8 +80,8 @@ export default function TabLayout() {
           marginBottom: Platform.OS === 'ios' ? 20 : 50,
           position: 'absolute',
         },
-        tabBarActiveTintColor: '#3b82f6',
-        tabBarInactiveTintColor: '#9ca3af',
+        tabBarActiveTintColor: colors.headerBackground,
+        tabBarInactiveTintColor: colors.inactive,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: '600',

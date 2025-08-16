@@ -1,13 +1,17 @@
+import { useAppTheme } from '@/hooks/AppThemeContext';
 import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Player } from '../types';
 import { pickAndSaveImage } from './save-image';
+
 
 type AddPlayerScreenProps = {
   addPlayer: (player: Player) => void;
 };
 
 export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
+  const colors = useAppTheme().colors
+
   const [image, setImage] = useState<string>(require('../../assets/images/react-logo.png'));
   const [name, setName] = useState('');
   const [points, setPoints] = useState('');
@@ -39,7 +43,7 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={styles.title}>New Player</Text>
       <View style={styles.imageSection}>
         <Pressable 
@@ -51,60 +55,60 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
         >
           <Image 
             source={typeof image === 'string' ? { uri: image } : image}
-            style={styles.image}
+            style={[styles.image, { borderColor: colors.imageBorder }]}
           />
-          <View style={styles.imageOverlay}>
-            <Text style={styles.imageOverlayText}>Tap to change</Text>
+          <View style={[styles.imageOverlay, { backgroundColor: colors.imageOverlayBackground }]}>
+            <Text style={[styles.imageOverlayText, { color: colors.imageOverlayText }]}>Change</Text>
           </View>
         </Pressable>
       </View>
 
       <View style={styles.formSection}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Player Name</Text>
+          <Text style={[styles.label, { color: colors.text }]}>Player Name</Text>
           <TextInput 
-            style={styles.input} 
+            style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
             value={name} 
             onChangeText={setName}
             placeholder="Enter player name"
-            placeholderTextColor="#9ca3af"
+            placeholderTextColor={colors.inputPlaceholder}
           />
         </View>
 
         <View style={styles.statsRow}>
           <View style={styles.statInput}>
-            <Text style={styles.label}>Points</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Points</Text>
             <TextInput 
-              style={styles.input} 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
               value={points} 
               onChangeText={setPoints} 
               keyboardType="numeric"
               placeholder="0"
-              placeholderTextColor="#9ca3af"
+              placeholderTextColor={colors.inputPlaceholder}
             />
           </View>
 
           <View style={styles.statInput}>
-            <Text style={styles.label}>Rebounds</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Rebounds</Text>
             <TextInput 
-              style={styles.input} 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
               value={rebounds} 
               onChangeText={setRebounds} 
               keyboardType="numeric"
               placeholder="0"
-              placeholderTextColor="#9ca3af"
+              placeholderTextColor={colors.inputPlaceholder}
             />
           </View>
 
           <View style={styles.statInput}>
-            <Text style={styles.label}>Assists</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Assists</Text>
             <TextInput 
-              style={styles.input} 
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
               value={assists} 
               onChangeText={setAssists} 
               keyboardType="numeric"
               placeholder="0"
-              placeholderTextColor="#9ca3af"
+              placeholderTextColor={colors.inputPlaceholder}
             />
           </View>
         </View>
@@ -112,11 +116,12 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
         <Pressable 
           style={({ pressed }) => [
             styles.addButton,
+            { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
             pressed && styles.addButtonPressed
           ]} 
           onPress={savePlayer}
         >
-          <Text style={styles.addButtonText}>Add Player</Text>
+          <Text style={[styles.addButtonText, { color: colors.buttonText }]}>Add Player</Text>
         </Pressable>
       </View>
     </View>
@@ -126,7 +131,6 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e4e4e7',
     padding: 20,
   },
   title: {
@@ -153,19 +157,16 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     borderWidth: 3,
-    borderColor: '#3b82f6',
   },
   imageOverlay: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     paddingVertical: 6,
     alignItems: 'center',
   },
   imageOverlayText: {
-    color: '#ffffff',
     fontSize: 8,
     fontWeight: '600',
   },
@@ -178,18 +179,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1f2937',
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#ffffff',
     borderRadius: 30,
     paddingVertical: 16,
     paddingHorizontal: 24,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -205,13 +202,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    backgroundColor: '#3b82f6',
     borderRadius: 30,
     paddingVertical: 16,
     paddingHorizontal: 24,
     alignItems: 'center',
     marginTop: 20,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -222,7 +217,6 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }],
   },
   addButtonText: {
-    color: '#ffffff',
     fontSize: 18,
     fontWeight: '700',
   },

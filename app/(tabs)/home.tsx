@@ -20,7 +20,6 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
     }, [players])
 
     const handleSortPlayers = (trait: string) => {
-        console.log(`Sorting by ${trait}`)
         const sortedPlayers = sortPlayers(players, trait as keyof Player)
         setPlayers(sortedPlayers)
     }
@@ -45,10 +44,11 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
     const colors = useAppTheme().colors
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
             <TextInput
-                style={[styles.search, { backgroundColor: colors.background}]}
+                style={[styles.search, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
                 placeholder='Search players...'
+                placeholderTextColor={colors.inputPlaceholder}
                 onChangeText={(query) => handleSearchPlayers(query)}
             />
 
@@ -65,18 +65,19 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                             key={index}
                             style={({ pressed }) => [
                                 styles.button,
+                                { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
                                 pressed && styles.buttonPressed
                             ]} 
                             onPress={() => handleSortPlayers(trait)}
                         >
-                            <Text style={styles.buttonText}>{trait}</Text>
+                            <Text style={[styles.buttonText, { color: colors.buttonText }]}>{trait}</Text>
                         </Pressable>
                     ))}
                 </ScrollView>
                 
                 {/* Left blur gradient */}
                 <LinearGradient
-                    colors={['#e4e4e7', 'transparent']}
+                    colors={[colors.linearGradient, 'transparent']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.leftBlur}
@@ -85,7 +86,7 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                 
                 {/* Right blur gradient */}
                 <LinearGradient
-                    colors={['transparent', '#e4e4e7']}
+                    colors={['transparent', colors.linearGradient]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.rightBlur}
@@ -102,19 +103,19 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                     columnWrapperStyle={numberOfColums > 1 ? { justifyContent: 'space-around', gap: 15 } : null}
                     keyExtractor={(_, index) => index.toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.card}>
-                            <Image source={{ uri: item.image }} style={styles.image}></Image>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.substats}>Points: {item.points}</Text>
-                            <Text style={styles.substats}>Rebounds: {item.rebounds}</Text>
-                            <Text style={styles.substats}>Assists: {item.assists}</Text>
+                        <View style={[styles.card, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
+                            <Image source={{ uri: item.image }} style={[styles.image, { borderColor: colors.imageBorder }]}></Image>
+                            <Text style={[styles.name, { color: colors.text }]}>{item.name}</Text>
+                            <Text style={[styles.substats, { color: colors.text }]}>Points: {item.points}</Text>
+                            <Text style={[styles.substats, { color: colors.text }]}>Rebounds: {item.rebounds}</Text>
+                            <Text style={[styles.substats, { color: colors.text }]}>Assists: {item.assists}</Text>
                         </View>
                     )}
                 />
                 
                 {/* Top blur gradient */}
                 <LinearGradient
-                    colors={['#e4e4e7', 'transparent']}
+                    colors={[colors.linearGradient, 'transparent']}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                     style={styles.topBlur}
@@ -123,7 +124,7 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
                 
                 {/* Bottom blur gradient */}
                 <LinearGradient
-                    colors={['transparent', '#e4e4e7']}
+                    colors={['transparent', colors.linearGradient]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0, y: 1 }}
                     style={styles.bottomBlur}
@@ -138,20 +139,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 20,
-        paddingBottom: Platform.OS === 'ios' ? 120 : 105, // Space for floating tab bar
-        backgroundColor: '#e4e4e7'
+        paddingBottom: Platform.OS === 'ios' ? 120 : 105,
     },
     search: {
         height: 45,
-        backgroundColor: '#ffffff',
         borderRadius: 20,
         marginHorizontal: 5,
         marginBottom: 15,
         paddingHorizontal: 20,
         fontSize: 16,
         borderWidth: 1,
-        borderColor: '#e5e7eb',
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
         shadowRadius: 3,
@@ -167,18 +164,16 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
     },
     buttonContentContainer: {
-        paddingHorizontal: 20, // Add padding so buttons don't get cut off by blur
+        paddingHorizontal: 20,
         alignItems: 'center',
     },
     button: {
         height: 40,
         marginRight: 12,
-        backgroundColor: '#3b82f6',
         paddingHorizontal: 20,
         paddingVertical: 8,
         borderRadius: 20,
         justifyContent: 'center',
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 3,
@@ -191,7 +186,6 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 14,
         fontWeight: '600',
-        color: '#ffffff',
         textAlign: 'center',
     },
     leftBlur: {
@@ -236,17 +230,13 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     card: {
-        backgroundColor: '#ffffff',
         padding: 16,
         marginVertical: 8,
         width: 150,
         borderRadius: 12,
-        // Enhanced shadow for iOS
-        shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 12,
-        // Enhanced shadow for Android
         elevation: 8,
     },
     image: {
@@ -256,20 +246,17 @@ const styles = StyleSheet.create({
         borderRadius: 35,
         marginBottom: 8,
         borderWidth: 2,
-        borderColor: '#3b82f6',
     },
     name: {
         alignSelf: 'center',
         fontSize: 16,
         fontWeight: '700',
-        color: '#1f2937',
         marginBottom: 8,
         textAlign: 'center',
     },
     substats: {
         fontSize: 12,
-        fontWeight: '500',
-        color: '#6b7280',
+        fontWeight: '700',
         marginBottom: 2,
     }
 });
