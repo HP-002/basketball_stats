@@ -6,9 +6,16 @@ import { Player } from "../app/types"
 export default function PlayerCard({ player }: { player: Player }) {
     const colors = useAppTheme().colors
 
+    let imageSource
+    if (player.image && typeof player.image === 'string' && (player.image.startsWith("http") || player.image.startsWith("file:") || player.image.startsWith("data:"))) {
+        imageSource = { uri: player.image }
+    }
+
+    console.log(imageSource)
+
     return (
         <View style={[styles.card, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor }]}>
-            <Image source={{ uri: player.image }} style={[styles.image, { borderColor: colors.imageBorder }]}></Image>
+            <Image source={typeof player.image === 'number' ? player.image : imageSource} style={[styles.image, { borderColor: colors.imageBorder }]}></Image>
             <Text style={[styles.name, { color: colors.text }]}>{player.name}</Text>
             <Text style={[styles.location, { color: colors.text }]}>{player.location}</Text>
             <View

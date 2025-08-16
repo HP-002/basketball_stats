@@ -2,7 +2,7 @@ import { useAppTheme } from '@/hooks/AppThemeContext';
 import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { pickAndSaveImage } from '../../components/save-image';
-import { Player } from '../types';
+import { defaultProfile, Player } from '../types';
 
 
 type AddPlayerScreenProps = {
@@ -12,7 +12,7 @@ type AddPlayerScreenProps = {
 export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
   const colors = useAppTheme().colors
 
-  const [image, setImage] = useState<string>(require('../../assets/images/react-logo.png'));
+  const [image, setImage] = useState(defaultProfile);
   const [name, setName] = useState('');
   const [location, setLocation] = useState('')
   const [age, setAge] = useState('')
@@ -21,6 +21,12 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
   const [rebounds, setRebounds] = useState('');
   const [assists, setAssists] = useState('');
   const [ratings, setRatings] = useState('');
+
+  let imageSource = defaultProfile
+
+  if (image && typeof image === 'string' && (image.startsWith("http") || image.startsWith("file:") || image.startsWith("data:"))) {
+    imageSource = { uri: image }
+  }
 
   const pickImage = async () => {
     const localUri = await pickAndSaveImage();
@@ -45,7 +51,7 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
       ratings: Number(ratings) || 0,
     })
 
-    setImage(require('../../assets/images/react-logo.png'))
+    setImage(defaultProfile)
     setName('')
     setLocation('')
     setAge('')
@@ -61,15 +67,15 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Text style={styles.title}>New Player</Text>
       <View style={styles.imageSection}>
-        <Pressable 
-          onPress={pickImage} 
+        <Pressable
+          onPress={pickImage}
           style={({ pressed }) => [
             styles.imagePressable,
             pressed && styles.imagePressed
           ]}
         >
-          <Image 
-            source={typeof image === 'string' ? { uri: image } : image}
+          <Image
+            source={imageSource}
             style={[styles.image, { borderColor: colors.imageBorder }]}
           />
           <View style={[styles.imageOverlay, { backgroundColor: colors.imageOverlayBackground }]}>
@@ -81,9 +87,9 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
       <View style={styles.formSection}>
         <View style={styles.inputGroup}>
           <Text style={[styles.label, { color: colors.text }]}>Player Name</Text>
-          <TextInput 
-            style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-            value={name} 
+          <TextInput
+            style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+            value={name}
             onChangeText={setName}
             placeholder="Enter player name"
             placeholderTextColor={colors.inputPlaceholder}
@@ -93,9 +99,9 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
         <View style={styles.statsRow}>
           <View style={styles.inputGroup}>
             <Text style={[styles.label, { color: colors.text }]}>Location</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={location} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={location}
               onChangeText={setLocation}
               placeholder="Location"
               placeholderTextColor={colors.inputPlaceholder}
@@ -104,9 +110,9 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
           <View style={styles.inputGroup}>
             <Text style={[styles.label, { color: colors.text }]}>Age</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={age} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={age}
               onChangeText={setAge}
               keyboardType="numeric"
               placeholder="0  "
@@ -116,9 +122,9 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
           <View style={styles.inputGroup}>
             <Text style={[styles.label, { color: colors.text }]}>Height (in inches)</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={height} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={height}
               onChangeText={setHeight}
               keyboardType="numeric"
               placeholder="inches"
@@ -130,10 +136,10 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
         <View style={styles.statsRow}>
           <View style={styles.statInput}>
             <Text style={[styles.label, { color: colors.text }]}>Points</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={points} 
-              onChangeText={setPoints} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={points}
+              onChangeText={setPoints}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={colors.inputPlaceholder}
@@ -142,10 +148,10 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
           <View style={styles.statInput}>
             <Text style={[styles.label, { color: colors.text }]}>Rebounds</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={rebounds} 
-              onChangeText={setRebounds} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={rebounds}
+              onChangeText={setRebounds}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={colors.inputPlaceholder}
@@ -154,10 +160,10 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
           <View style={styles.statInput}>
             <Text style={[styles.label, { color: colors.text }]}>Assists</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={assists} 
-              onChangeText={setAssists} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={assists}
+              onChangeText={setAssists}
               keyboardType="numeric"
               placeholder="0"
               placeholderTextColor={colors.inputPlaceholder}
@@ -166,23 +172,23 @@ export default function AddPlayerScreen({ addPlayer }: AddPlayerScreenProps) {
 
           <View style={styles.statInput}>
             <Text style={[styles.label, { color: colors.text }]}>Ratings</Text>
-            <TextInput 
-              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor}]} 
-              value={points} 
-              onChangeText={setRatings} 
+            <TextInput
+              style={[styles.input, { backgroundColor: colors.inputBackground, borderColor: colors.inputBorder, shadowColor: colors.shadowColor }]}
+              value={points}
+              onChangeText={setRatings}
               keyboardType="numeric"
-              placeholder="Out of 10"
+              placeholder="0"
               placeholderTextColor={colors.inputPlaceholder}
             />
           </View>
         </View>
 
-        <Pressable 
+        <Pressable
           style={({ pressed }) => [
             styles.addButton,
             { backgroundColor: colors.buttonBackground, shadowColor: colors.shadowColor },
             pressed && styles.addButtonPressed
-          ]} 
+          ]}
           onPress={savePlayer}
         >
           <Text style={[styles.addButtonText, { color: colors.buttonText }]}>Add Player</Text>

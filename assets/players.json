@@ -1,6 +1,6 @@
 [
   {
-    "image": "https://via.placeholder.com/150",
+    "image": "https://picsum.photos/100",
     "name": "Marcus Johnson",
     "location": "Los Angeles, USA",
     "age": 27,
@@ -11,7 +11,7 @@
     "ratings": 92
   },
   {
-    "image": "https://via.placeholder.com/150",
+    "image": "https://picsum.photos/150",
     "name": "Darius Carter",
     "location": "Chicago, USA",
     "age": 25,
@@ -22,7 +22,7 @@
     "ratings": 88
   },
   {
-    "image": "https://via.placeholder.com/150",
+    "image": "https://picsum.photos/200",
     "name": "Luis Fernandez",
     "location": "Madrid, Spain",
     "age": 29,
@@ -33,7 +33,7 @@
     "ratings": 90
   },
   {
-    "image": "https://via.placeholder.com/150",
+    "image": "https://picsum.photos/250",
     "name": "Kenji Nakamura",
     "location": "Tokyo, Japan",
     "age": 23,
@@ -44,7 +44,7 @@
     "ratings": 85
   },
   {
-    "image": "https://via.placeholder.com/150",
+    "image": "https://picsum.photos/300",
     "name": "Ethan Williams",
     "location": "Toronto, Canada",
     "age": 30,

@@ -47,11 +47,9 @@ async function loadPlayers(): Promise<Player[]> {
     const jsonValue = await AsyncStorage.getItem(PLAYERS_KEY);
 
     if (jsonValue) {
-      // ✅ Return previously saved players
       return JSON.parse(jsonValue) as Player[];
     }
 
-    // ✅ If no data exists yet, use starter players
     await savePlayers(starterPlayers);
     return starterPlayers as Player[];
   } catch (error) {

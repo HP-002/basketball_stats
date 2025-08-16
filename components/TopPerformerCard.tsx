@@ -1,3 +1,4 @@
+import { defaultProfile } from "@/app/types";
 import { useAppTheme } from "@/hooks/AppThemeContext";
 import { Image, StyleSheet, Text, View } from "react-native";
 
@@ -26,6 +27,11 @@ export default function TopPerformerCard({ title, player, stat, statValue}: TopP
         );
     }
 
+    let imageSource = defaultProfile
+    if (player.image && (player.image.startsWith("http") || player.image.startsWith("file:") || player.image.startsWith("data:"))) {
+        imageSource = { uri: player.image }
+    }
+
     return (
         <View style={[styles.topPerformerCard, { backgroundColor: colors.cardBackground, shadowColor: colors.shadowColor, borderLeftColor: color }]}>
             <View style={styles.cardHeader}>
@@ -33,7 +39,7 @@ export default function TopPerformerCard({ title, player, stat, statValue}: TopP
                 <Text style={[styles.statBadge, { backgroundColor: color }]}>{icon}</Text>
             </View>
             <View style={styles.playerInfo}>
-                <Image source={{ uri: player.image }} style={[styles.playerImage, { borderColor: colors.imageBorder }]} />
+                <Image source={imageSource} style={[styles.playerImage, { borderColor: colors.imageBorder }]} />
                 <View style={styles.playerDetails}>
                     <Text style={[styles.playerName, { color: colors.text }]}>{player.name}</Text>
                     <Text style={[styles.playerStat, { color: colors.text }]}>{statValue} {stat}</Text>

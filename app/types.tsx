@@ -1,5 +1,5 @@
 export type Player = {
-    image: string,
+    image: string | number,
     name: string,
     location: string,
     age: number,
@@ -9,3 +9,5 @@ export type Player = {
     assists: number,
     ratings: number,
 }
+
+export const defaultProfile = require('@/assets/images/defaultPicture.png')

@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
         height: 45,
         borderRadius: 20,
         marginHorizontal: 5,
-        marginBottom: 15,
         paddingHorizontal: 20,
         fontSize: 16,
         borderWidth: 1,
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     },
     scrollContainer: {
         position: 'relative',
-        marginBottom: 15,
+        marginBottom: 3,
         height: 60,
     },
     buttonContainer: {
