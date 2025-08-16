@@ -1,13 +1,40 @@
+import { useAppTheme } from '@/hooks/AppThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React, { useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Pressable } from 'react-native';
 import { Player } from '../types';
 import AddPlayerScreen from './add-player';
 import HomeScreen from './home';
 import StatsScreen from './stats';
 
 const Tab = createBottomTabNavigator();
+
+const ThemeToggle = () => {
+  const { colors, isDark, toggleTheme } = useAppTheme();
+
+  return (
+    <Pressable
+    onPress={toggleTheme}
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: colors.surface,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15,
+      }
+      
+      }>
+      <Ionicons
+        name={isDark ? 'sunny' : 'moon'}
+        size={18}
+        color={colors.primary}
+      />
+    </Pressable>
+  );
+};
 
 export default function TabLayout() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -17,7 +44,7 @@ export default function TabLayout() {
   };
 
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: true,
         headerShown: true,
@@ -35,6 +62,7 @@ export default function TabLayout() {
           marginTop: Platform.OS === 'ios' ? 10 : 0,
         },
         headerTitleAlign: 'center',
+        headerRight: () => <ThemeToggle />,
         tabBarStyle: {
           backgroundColor: '#ffffff',
           borderTopWidth: 0,
@@ -68,10 +96,10 @@ export default function TabLayout() {
         options={{
           title: 'Basketball Stats',
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "home" : "home-outline"} 
-              size={focused ? size + 2 : size} 
-              color={color} 
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={focused ? size + 2 : size}
+              color={color}
             />
           ),
           tabBarLabel: 'Home',
@@ -79,16 +107,16 @@ export default function TabLayout() {
       >
         {() => <HomeScreen players={players} setPlayers={setPlayers} />}
       </Tab.Screen>
-      
+
       <Tab.Screen
         name="New Player"
         options={{
           title: 'Add New Player',
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "add-circle" : "add-circle-outline"} 
-              size={focused ? size + 2 : size} 
-              color={color} 
+            <Ionicons
+              name={focused ? "add-circle" : "add-circle-outline"}
+              size={focused ? size + 2 : size}
+              color={color}
             />
           ),
           tabBarLabel: 'Add Player',
@@ -96,16 +124,16 @@ export default function TabLayout() {
       >
         {() => <AddPlayerScreen addPlayer={addPlayer} />}
       </Tab.Screen>
-      
+
       <Tab.Screen
         name="Stats"
         options={{
           title: 'Player Statistics',
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "stats-chart" : "stats-chart-outline"} 
-              size={focused ? size + 2 : size} 
-              color={color} 
+            <Ionicons
+              name={focused ? "stats-chart" : "stats-chart-outline"}
+              size={focused ? size + 2 : size}
+              color={color}
             />
           ),
           tabBarLabel: 'Statistics',

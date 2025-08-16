@@ -1,3 +1,4 @@
+import { useAppTheme } from '@/hooks/AppThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
 import { Dimensions, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
@@ -41,10 +42,12 @@ export default function HomeScreen({ players, setPlayers }: HomeScreenProps) {
         numberOfColums = 2
     }
 
+    const colors = useAppTheme().colors
+
     return (
         <View style={styles.container}>
             <TextInput
-                style={styles.search}
+                style={[styles.search, { backgroundColor: colors.background}]}
                 placeholder='Search players...'
                 onChangeText={(query) => handleSearchPlayers(query)}
             />
