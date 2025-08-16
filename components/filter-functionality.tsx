@@ -31,7 +31,12 @@ function searchPlayers(players: Player[], query: string): Player[] {
 
 async function savePlayers(players: Player[]) {
     try {
-        const allPlayers = await loadPlayers()
+        const allPlayers: Player[] = [...await loadPlayers(), ...players].reduce((acc: Player[], obj: Player) => {
+            if (!acc.some(item => item.name === obj.name)) {
+                acc.push(obj);
+            }
+            return acc;
+        }, []);
         const jsonValue = JSON.stringify(allPlayers);
         await AsyncStorage.setItem(PLAYERS_KEY, jsonValue);
     } catch (error) {
@@ -42,18 +47,18 @@ async function savePlayers(players: Player[]) {
 
 async function loadPlayers(): Promise<Player[]> {
     try {
-    const jsonValue = await AsyncStorage.getItem(PLAYERS_KEY);
+        const jsonValue = await AsyncStorage.getItem(PLAYERS_KEY);
 
-    if (jsonValue) {
-      return JSON.parse(jsonValue) as Player[];
+        if (jsonValue) {
+            return JSON.parse(jsonValue) as Player[];
+        }
+
+        await savePlayers(starterPlayers);
+        return starterPlayers as Player[];
+    } catch (error) {
+        console.error("Error loading players:", error);
+        return [];
     }
-
-    await savePlayers(starterPlayers);
-    return starterPlayers as Player[];
-  } catch (error) {
-    console.error("Error loading players:", error);
-    return [];
-  }
 }
 
 
